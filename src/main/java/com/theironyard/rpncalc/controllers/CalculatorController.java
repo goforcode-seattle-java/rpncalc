@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.theironyard.rpncalc.commands.AddCommand;
+import com.theironyard.rpncalc.commands.ClearCommand;
+import com.theironyard.rpncalc.commands.MultiplyCommand;
 import com.theironyard.rpncalc.commands.NegateCommand;
+import com.theironyard.rpncalc.commands.PushCommand;
+import com.theironyard.rpncalc.commands.SubtractCommand;
 import com.theironyard.rpncalc.commands.Undoable;
 
 @Controller
@@ -52,15 +56,37 @@ public class CalculatorController {
 		return "redirect:/calculator";
 	}
 	
+	@PostMapping("operation/subtract")
+	public String subtractTwoMostRecentNumbers() {
+		SubtractCommand command  = new SubtractCommand(numberStack);
+		command.execute();
+		commandHistory.push(command);
+		
+		return "redirect:/calculator";
+	}
+	
+	@PostMapping("operation/multiply")
+	public String multiplyTwoMostRecentNumbers() {
+		MultiplyCommand command  = new MultiplyCommand(numberStack);
+		command.execute();
+		commandHistory.push(command);
+		
+		return "redirect:/calculator";
+	}
+	
 	@PostMapping("operation/clear")
 	public String clearValues() {
-		numberStack.clear();
+		ClearCommand command = new ClearCommand(numberStack);
+		command.execute();
+		commandHistory.push(command);
 		return "redirect:/calculator";
 	}
 
 	@PostMapping("values")
 	public String pushValueOntoStack(double theNumber) {
-		numberStack.push(theNumber);
+		PushCommand command = new PushCommand(theNumber, numberStack);
+		command.execute();
+		commandHistory.push(command);
 		return "redirect:/calculator";
 	}
 	
