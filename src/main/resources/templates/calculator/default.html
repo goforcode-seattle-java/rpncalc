@@ -43,6 +43,9 @@
 		
 		
 		{{#canShowBinaryOperator}}
+		<form method="post" action="/calculator/operation/swap">
+			<button>⇋</button>
+		</form>
 		<form method="post" action="/calculator/operation/add">
 			<button>+</button>
 		</form>
@@ -51,6 +54,9 @@
 		</form>
 		<form method="post" action="/calculator/operation/multiply">
 			<button>x</button>
+		</form>
+		<form method="post" action="/calculator/operation/divide">
+			<button>/</button>
 		</form>
 		{{/canShowBinaryOperator}}
 		

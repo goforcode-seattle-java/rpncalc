@@ -10,17 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.theironyard.rpncalc.commands.AddCommand;
 import com.theironyard.rpncalc.commands.ClearCommand;
+import com.theironyard.rpncalc.commands.DivideCommand;
 import com.theironyard.rpncalc.commands.MultiplyCommand;
 import com.theironyard.rpncalc.commands.NegateCommand;
 import com.theironyard.rpncalc.commands.PushCommand;
 import com.theironyard.rpncalc.commands.SubtractCommand;
+import com.theironyard.rpncalc.commands.SwapCommand;
+import com.theironyard.rpncalc.commands.TwoArgumentCommand;
 import com.theironyard.rpncalc.commands.Undoable;
 
 @Controller
 @RequestMapping("/calculator")
 public class CalculatorController {
 	
-	Stack<Double> numberStack;
+	private Stack<Double> numberStack;
 	private Stack<Undoable> commandHistory;
 	
 	public CalculatorController() {
@@ -38,9 +41,27 @@ public class CalculatorController {
 		return "redirect:/calculator";
 	}
 	
+	@PostMapping("operation/swap")
+	public String swapTheMostRecentNumbers() {
+		SwapCommand command  = new SwapCommand(numberStack);
+		command.execute();
+		commandHistory.push(command);
+		
+		return "redirect:/calculator";
+	}
+	
 	@PostMapping("operation/negate")
 	public String negateTheMostRecentNumber() {
 		NegateCommand command  = new NegateCommand(numberStack);
+		command.execute();
+		commandHistory.push(command);
+		
+		return "redirect:/calculator";
+	}
+	
+	@PostMapping("operation/divide")
+	public String divideTwoMostRecentNumbers() {
+		DivideCommand command  = new DivideCommand(numberStack);
 		command.execute();
 		commandHistory.push(command);
 		

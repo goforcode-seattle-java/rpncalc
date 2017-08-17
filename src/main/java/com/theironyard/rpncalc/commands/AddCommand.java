@@ -2,27 +2,19 @@ package com.theironyard.rpncalc.commands;
 
 import java.util.Stack;
 
-public class AddCommand implements Undoable {
+public class AddCommand extends TwoArgumentCommand {
 	
-	private Stack<Double> numberStack;
-	private double firstPopped;
-	private double secondPopped;
-
 	public AddCommand(Stack<Double> numberStack) {
-		this.numberStack = numberStack;
-	}
-	
-	public void execute() {
-		firstPopped = numberStack.pop();
-		secondPopped  = numberStack.pop();
-		double result = firstPopped + secondPopped;
-		numberStack.push(result);
+		super(numberStack);
 	}
 
-	public void undo() {
-		numberStack.pop();
-		numberStack.push(secondPopped);
-		numberStack.push(firstPopped);
+	@Override
+	protected double doMaths() {
+		return getSecondPopped() + getFirstPopped();
+	}
+	
+	public void sendEmailAboutTheResult() {
+		
 	}
 	
 }
